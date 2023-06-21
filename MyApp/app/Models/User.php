@@ -42,4 +42,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+//    For one-to-one relationship
+    public function post() {
+//      By default, second argument is considered as user_id. But in this case I am going to pass the arg anyway.
+        return $this->hasOne("App\Models\Post", "user_id");
+    }
+
+//    For many-to-one relationship
+    public function posts() {
+        return $this->hasMany("App\Models\Post");
+    }
+
+    public function roles() {
+        return $this->belongsToMany("App\Models\Role");
+    }
 }
