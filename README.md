@@ -88,3 +88,22 @@ Here, "Post" is the name of the model, in this file by default "posts" is the na
 ```
 php artisan make:model Post -m
 ```
+
+## Note: by default laravel prevents allow mass assignment
+Example:
+```
+Route::get("/create", function () {
+    Post::create(['title'=> 'This is some title', 'content'=>'This is created by create method, where multiple column of entry gets created at ones.']);
+});
+```
+Gives this error-
+```
+Illuminate \ Database \ Eloquent \ MassAssignmentException
+```
+To avoid this, add this code in "MyApp/app/Models/Post.php" in post class
+```php
+    protected $fillable = [
+        'title',
+        'content'
+    ];
+```
