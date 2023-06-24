@@ -107,3 +107,7 @@ To avoid this, add this code in "MyApp/app/Models/Post.php" in post class
         'content'
     ];
 ```
+## For more details for eloquent relationship
+```
+https://laravel.com/docs/10.x/eloquent-relationships
+```

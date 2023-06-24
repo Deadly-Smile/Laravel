@@ -24,4 +24,19 @@ class Post extends Model
     public function user() {
         return $this->belongsTo("App\Models\User");
     }
+
+//    Format
+//    public function image(): MorphOne
+//    {
+//        return $this->morphOne(Image::class, 'imageable');
+//    }
+
+    public function photos()
+    {
+        return $this->morphMany(Photo::class, 'imageable');
+    }
+
+    public function tags() {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 }
