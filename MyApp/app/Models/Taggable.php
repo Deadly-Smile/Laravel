@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Taggable extends Model
 {
     use HasFactory;
+
+    public function taggable() {
+        return $this->morphTo();
+    }
 }

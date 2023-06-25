@@ -4,7 +4,10 @@ use App\Models\Country;
 use App\Models\Photo;
 use App\Models\Post;
 use App\Models\Role;
+use App\Models\Tag;
+use App\Models\Taggable;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\DB;
@@ -186,6 +189,7 @@ Route::get("country/{id}/posts", function ($id) {
 
 });
 
+// Polymorphic one-to-many
 Route::get("user/{id}/photos", function ($id) {
     foreach (User::find($id)->photos as $photo) {
         echo "<p>$photo</p>";
@@ -202,8 +206,19 @@ Route::get("photo/{id}/owner", function ($id) {
     return Photo::findOrFail($id)->imageable;
 });
 
-Route::get("tag/{id}/videos", function ($id) {
+// Polymorphic many-to-many
+Route::get("post/{id}/tag", function ($id) {
     foreach (Post::findOrFail($id)->tags as $tag) {
+        echo $tag->name."<br>";
+    }
+});
+
+Route::get("tag/{id}/owner", function ($id) {
+    return Taggable::findOrFail($id)->taggable_type;
+});
+
+Route::get("video/{id}/tag", function ($id) {
+    foreach (Video::findOrFail($id)->tags as $tag) {
         echo $tag->name."<br>";
     }
 });
