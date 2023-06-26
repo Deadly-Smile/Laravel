@@ -107,3 +107,56 @@ To avoid this, add this code in "MyApp/app/Models/Post.php" in post class
         'content'
     ];
 ```
+## For more details for eloquent relationship
+```
+https://laravel.com/docs/10.x/eloquent-relationships
+```
+
+## Tinker command:
+### Tinker is used for testing without using route
+### Initialize:
+```
+php artisan tinker
+```
+### Create an entry:
+```php
+App\Models\Post::create(['title'=>'Tinker Title', 'content'=> 'Tinker
+ Content, testing']);
+```
+In this example entry is created in post table using Post model
+
+### Creating an entry by creating object first
+```php
+$post = new App\Models\Post;
+$post->title = 'This is a title from tinker';
+$post->content = 'This is the content of manually created tinker post';
+$post->save(); // adding to the table
+```
+Here each line is executed one by one through terminal
+### Getting info
+You can only get one first entry by 'first' function
+```php
+$post = App\Models\Post::whereId(7)->first(); // same as -> $post = App\Models\Post::where('id', 7)->first();
+```
+### Updating:
+```php
+$post = App\Models\Post::findOrFail(7);
+$post->title = 'Updating tinker title that was created manually';
+$post->content = 'Updated content, nothing else to say';
+$post->save();
+```
+Here each line is executed one by one through terminal
+### Deleting:
+At first select what to delete
+```php
+$post = App\Models\Post::findOrFail(7);
+```
+For soft deleting, if we are using softDelete library
+```php
+$post->delete();
+```
+For force deleting an entry
+```php
+$post->forceDelete();
+```
+### Basically use as one would use eloquent query 

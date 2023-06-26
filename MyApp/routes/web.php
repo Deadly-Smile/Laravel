@@ -1,7 +1,13 @@
 <?php
 
+use App\Models\Country;
+use App\Models\Photo;
 use App\Models\Post;
+use App\Models\Role;
+use App\Models\Tag;
+use App\Models\Taggable;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\DB;
@@ -17,9 +23,9 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return view('welcome');
+});
 //Route::get('/post/{id}', [PostsController::class, 'index']);
 
 /*
@@ -155,13 +161,67 @@ Route::get("user/{id}/posts", function ($id) {
 
 });
 
+// Many-To-Many relationship
 Route::get("user/{id}/role", function ($id) {
 //    return User::find($id)->roles;
     foreach (User::find($id)->roles as $role) {
         echo $role->name;
     }
 });
+// Inverse
+Route::get("role/{role_id}/users", function ($role_id) {
+    foreach (Role::find($role_id)->users as $user) {
+        echo "<p>$user->name</p>";
+    }
+});
 
+Route::get("user/pivot", function () {
+    foreach (User::find(1)->roles as $role) {
+        echo $role->pivot->created_at;
+    }
+});
+
+Route::get("country/{id}/posts", function ($id) {
+    foreach (Country::find($id)->posts as $post) {
+        $value = $post->user->name;
+        echo "<p>$value</p>";
+    }
+
+});
+
+// Polymorphic one-to-many
+Route::get("user/{id}/photos", function ($id) {
+    foreach (User::find($id)->photos as $photo) {
+        echo "<p>$photo</p>";
+    }
+});
+
+Route::get("post/{id}/photos", function ($id) {
+    foreach (Post::find($id)->photos as $photo) {
+        echo "<p>$photo</p>";
+    }
+});
+
+Route::get("photo/{id}/owner", function ($id) {
+    return Photo::findOrFail($id)->imageable;
+});
+
+// Polymorphic many-to-many
+Route::get("post/{id}/tag", function ($id) {
+    foreach (Post::findOrFail($id)->tags as $tag) {
+        echo $tag->name."<br>";
+    }
+});
+
+Route::get("tag/{id}/owner", function ($id) {
+    return Taggable::findOrFail($id)->taggable_type;
+});
+
+Route::get("video/{id}/tag", function ($id) {
+    foreach (Video::findOrFail($id)->tags as $tag) {
+        echo $tag->name."<br>";
+    }
+});
 
 //Route::get('/test', [PostsController::class, 'test']);
 
