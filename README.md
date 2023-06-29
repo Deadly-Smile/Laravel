@@ -160,3 +160,23 @@ For force deleting an entry
 $post->forceDelete();
 ```
 ### Basically use as one would use eloquent query 
+
+## Useful query
+### Attach a role to a user or add an entry on pivot table
+```php
+App\Models\User::find(12)->roles()->attach(1);
+```
+Attach has a feature that allow duplicate entry, though id change but all other info remain same.
+### Detach a role to a user or remove an entry on pivot table
+```php
+App\Models\User::find(12)->roles()->detach(1);
+```
+ Detach may delete multiple entry that was attached. Without argument it will delete all record in the table. 
+ ### Sync method
+ ```php
+ App\Models\User::find(12)->roles()->sync([1]);
+ ```
+ It creates uniqe entry and deletes dupticates, multiple entry canbe placed by the elements of the argument array. For example:
+ ```php
+ App\Models\User::find(1)->roles()->sync([1, 2, 3]);
+ ```
